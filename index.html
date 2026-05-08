@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maru Clothes 👗</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #f5f5f0; min-height: 100vh; }
+  header { background: #fff; border-bottom: 1px solid #e8e8e8; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 10; }
+  .logo { font-size: 20px; font-weight: 600; color: #222; }
+  .logo span { color: #1D9E75; }
+  .nav { display: flex; gap: 8px; }
+  .nav button { background: transparent; border: 1px solid #ddd; border-radius: 8px; padding: 6px 14px; cursor: pointer; font-size: 13px; color: #555; transition: all .2s; }
+  .nav button.active { background: #1D9E75; color: #fff; border-color: #1D9E75; }
+  .body { padding: 20px 16px; max-width: 960px; margin: 0 auto; }
+  .filtros { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .filtros button { background: #fff; border: 1px solid #e0e0e0; border-radius: 20px; padding: 5px 14px; cursor: pointer; font-size: 13px; color: #666; transition: all .2s; }
+  .filtros button.active { background: #1D9E75; color: #fff; border-color: #1D9E75; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+  .card { background: #fff; border: 1px solid #eee; border-radius: 12px; overflow: hidden; position: relative; transition: transform .2s; }
+  .card:hover { transform: translateY(-2px); }
+  .card-img { width: 100%; aspect-ratio: 3/4; background: #f0f0f0; overflow: hidden; cursor: zoom-in; }
+  .card-img img { width: 100%; height: 100%; object-fit: cover; }
+  .card-img .no-img { display: flex; align-items: center; justify-content: center; height: 100%; font-size: 48px; }
+  .card-body { padding: 10px 12px 12px; }
+  .card-nombre { font-weight: 600; font-size: 14px; margin-bottom: 4px; color: #222; }
+  .badges { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 6px; }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; }
+  .badge-cat { background: #E1F5EE; color: #0F6E56; }
+  .badge-talla { background: #EEEDFE; color: #3C3489; }
+  .badge-vendida-tag { position: absolute; top: 10px; right: 10px; background: #E24B4A; color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 10px; font-weight: 600; }
+  .precio { font-size: 18px; font-weight: 700; color: #1D9E75; margin: 4px 0 8px; }
+  .desc { font-size: 12px; color: #888; margin-bottom: 10px; line-height: 1.4; }
+  .wa-btn { width: 100%; background: #25D366; color: #fff; border: none; border-radius: 8px; padding: 9px 0; cursor: pointer; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .wa-btn:hover { background: #1ea855; }
+  .empty { text-align: center; padding: 60px 20px; color: #aaa; }
+  .empty .emoji { font-size: 48px; margin-bottom: 12px; }
+  /* Admin */
+  .admin-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+  .admin-box h3 { font-size: 15px; font-weight: 600; margin-bottom: 16px; color: #222; }
+  label { font-size: 13px; color: #666; display: block; margin-bottom: 4px; margin-top: 10px; }
+  input, select, textarea { width: 100%; padding: 9px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; font-family: inherit; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: #1D9E75; }
+  textarea { resize: vertical; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .btn-primary { background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 10px 20px; cursor: pointer; font-size: 14px; font-weight: 600; width: 100%; margin-top: 14px; }
+  .btn-primary:hover { background: #178a63; }
+  .btn-primary:disabled { background: #aaa; cursor: not-allowed; }
+  .btn-sec { background: transparent; border: 1px solid #ddd; border-radius: 8px; padding: 8px 14px; cursor: pointer; font-size: 13px; color: #555; }
+  .admin-list { display: flex; flex-direction: column; gap: 10px; }
+  .admin-item { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 12px 14px; display: flex; gap: 12px; align-items: center; }
+  .admin-thumb { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; background: #f0f0f0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 24px; overflow: hidden; }
+  .admin-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .admin-info { flex: 1; min-width: 0; }
+  .admin-info strong { font-size: 14px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .admin-info span { font-size: 12px; color: #888; }
+  .admin-btns { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .admin-btns button { font-size: 12px; padding: 4px 10px; border-radius: 6px; cursor: pointer; border: 1px solid #ddd; background: transparent; color: #555; }
+  .btn-vender { border-color: #E24B4A !important; color: #E24B4A !important; }
+  .btn-disponible { border-color: #1D9E75 !important; color: #1D9E75 !important; }
+  .btn-del { border-color: #E24B4A !important; color: #E24B4A !important; }
+  .login-box { max-width: 320px; margin: 60px auto; }
+  .vendida-opacity { opacity: 0.5; }
+  .preview-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.8); z-index: 999; display: flex; align-items: center; justify-content: center; cursor: zoom-out; }
+  .preview-overlay img { max-width: 90vw; max-height: 90vh; border-radius: 8px; }
+  .loading { text-align: center; padding: 40px; color: #aaa; font-size: 14px; }
+  .upload-preview { margin-top: 8px; width: 80px; height: 80px; object-fit: cover; border-radius: 8px; }
+  .hint { font-size: 12px; color: #aaa; margin-top: 4px; }
+  @media (max-width: 480px) { .row2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div id="preview-overlay" class="preview-overlay" style="display:none" onclick="cerrarPreview()">
+  <img id="preview-img" src="">
+</div>
+
+<header>
+  <div class="logo">Maru <span>Clothes</span> 👗</div>
+  <div class="nav">
+    <button id="btn-tienda" class="active" onclick="setVista('tienda')">Ver tienda</button>
+    <button id="btn-admin" onclick="setVista('admin')">Admin</button>
+  </div>
+</header>
+
+<div class="body">
+  <!-- TIENDA -->
+  <div id="vista-tienda">
+    <div class="filtros" id="filtros"></div>
+    <div id="grid-prendas" class="loading">Cargando prendas...</div>
+  </div>
+
+  <!-- ADMIN LOGIN -->
+  <div id="vista-login" style="display:none">
+    <div class="login-box">
+      <div class="admin-box">
+        <h3>🔐 Acceso admin</h3>
+        <label>Contraseña</label>
+        <input type="password" id="input-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
+        <button class="btn-primary" onclick="login()">Entrar</button>
+      </div>
+      <p class="hint" style="text-align:center">Contraseña: mitienda123</p>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div id="vista-admin" style="display:none">
+    <div class="admin-box">
+      <h3 id="form-title">➕ Agregar prenda</h3>
+      <div class="row2">
+        <div>
+          <label>Nombre *</label>
+          <input id="f-nombre" placeholder="Ej: Remera azul">
+        </div>
+        <div>
+          <label>Precio (ARS) *</label>
+          <input id="f-precio" type="number" placeholder="0">
+        </div>
+      </div>
+      <div class="row2">
+        <div>
+          <label>Categoría</label>
+          <select id="f-categoria">
+            <option>Remeras</option><option>Pantalones</option><option>Vestidos</option>
+            <option>Buzos</option><option>Camperas</option><option>Faldas</option>
+            <option>Accesorios</option><option>Otro</option>
+          </select>
+        </div>
+        <div>
+          <label>Talla</label>
+          <select id="f-talla">
+            <option>XS</option><option>S</option><option>M</option>
+            <option>L</option><option>XL</option><option>XXL</option><option>Único</option>
+          </select>
+        </div>
+      </div>
+      <label>Descripción (opcional)</label>
+      <textarea id="f-desc" rows="2" placeholder="Estado, material, detalle..."></textarea>
+      <label>Foto</label>
+      <input type="file" id="f-foto" accept="image/*" onchange="previewFoto(this)">
+      <img id="foto-preview" class="upload-preview" style="display:none">
+      <div style="display:flex;gap:8px;margin-top:14px">
+        <button class="btn-primary" id="btn-guardar" onclick="guardar()">Agregar prenda</button>
+        <button class="btn-sec" id="btn-cancelar" style="display:none" onclick="cancelarEdit()">Cancelar</button>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <strong id="admin-count">Mis prendas</strong>
+      <button class="btn-sec" onclick="cargarPrendas()">🔄 Actualizar</button>
+    </div>
+    <div id="admin-list" class="admin-list"></div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://zcdtqqwatxtcnuhuarsr.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_564Mw52rbkqG0thKvQxrdA_fLIGO2Wc';
+const CLOUDINARY_CLOUD = 'dkwlsxtnf';
+const CLOUDINARY_PRESET = 'Maru Clothes';
+const WHATSAPP = '5491160467490';
+const PASS = 'mitienda123';
+const CATEGORIAS = ['Todo','Remeras','Pantalones','Vestidos','Buzos','Camperas','Faldas','Accesorios','Otro'];
+
+let prendas = [];
+let filtro = 'Todo';
+let editId = null;
+let adminOk = false;
+
+async function api(method, path, body) {
+  const r = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
+    method,
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': method === 'POST' ? 'return=representation' : ''
+    },
+    body: body ? JSON.stringify(body) : undefined
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return method === 'DELETE' ? null : r.json();
+}
+
+async function cargarPrendas() {
+  try {
+    prendas = await api('GET', 'prendas?order=id.desc');
+    renderTienda();
+    if (adminOk) renderAdmin();
+  } catch(e) { console.error(e); }
+}
+
+function renderTienda() {
+  const filtradas = filtro === 'Todo' ? prendas : prendas.filter(p => p.categoria === filtro);
+  const grid = document.getElementById('grid-prendas');
+  if (!filtradas.length) {
+    grid.innerHTML = '<div class="empty"><div class="emoji">👗</div><p style="font-size:16px;font-weight:600;margin-bottom:6px">No hay prendas aún</p><p style="font-size:14px">¡Pronto vas a ver las novedades!</p></div>';
+    return;
+  }
+  grid.className = 'grid';
+  grid.innerHTML = filtradas.map(p => `
+    <div class="card ${p.vendida ? 'vendida-opacity' : ''}">
+      ${p.vendida ? '<span class="badge-vendida-tag">Vendida</span>' : ''}
+      <div class="card-img" onclick="${p.imagen_url ? `abrirPreview('${p.imagen_url}')` : ''}">
+        ${p.imagen_url ? `<img src="${p.imagen_url}" loading="lazy">` : '<div class="no-img">👗</div>'}
+      </div>
+      <div class="card-body">
+        <div class="card-nombre">${p.nombre}</div>
+        <div class="badges">
+          <span class="badge badge-cat">${p.categoria}</span>
+          <span class="badge badge-talla">Talla ${p.talla}</span>
+        </div>
+        <div class="precio">$${Number(p.precio).toLocaleString('es-AR')}</div>
+        ${p.descripcion ? `<div class="desc">${p.descripcion}</div>` : ''}
+        ${!p.vendida ? `<button class="wa-btn" onclick="whatsapp(${p.id})">💬 Consultar por WhatsApp</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderAdmin() {
+  document.getElementById('admin-count').textContent = `Mis prendas (${prendas.length})`;
+  const list = document.getElementById('admin-list');
+  if (!prendas.length) { list.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px">Todavía no agregaste prendas.</p>'; return; }
+  list.innerHTML = prendas.map(p => `
+    <div class="admin-item ${p.vendida ? 'vendida-opacity' : ''}">
+      <div class="admin-thumb">${p.imagen_url ? `<img src="${p.imagen_url}">` : '👗'}</div>
+      <div class="admin-info">
+        <strong>${p.nombre}</strong>
+        <span>${p.categoria} · Talla ${p.talla} · $${Number(p.precio).toLocaleString('es-AR')}</span>
+        <div class="admin-btns">
+          <button onclick="editar(${p.id})">Editar</button>
+          <button class="${p.vendida ? 'btn-disponible' : 'btn-vender'}" onclick="toggleVendida(${p.id},${p.vendida})">${p.vendida ? 'Marcar disponible' : 'Marcar vendida'}</button>
+          <button class="btn-del" onclick="eliminar(${p.id})">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderFiltros() {
+  document.getElementById('filtros').innerHTML = CATEGORIAS.map(c =>
+    `<button class="${filtro===c?'active':''}" onclick="setFiltro('${c}')">${c}</button>`
+  ).join('');
+}
+
+function setFiltro(f) { filtro = f; renderFiltros(); renderTienda(); }
+
+function setVista(v) {
+  document.getElementById('btn-tienda').className = v==='tienda'?'active':'';
+  document.getElementById('btn-admin').className = v==='admin'?'active':'';
+  document.getElementById('vista-tienda').style.display = v==='tienda'?'':'none';
+  document.getElementById('vista-login').style.display = (v==='admin'&&!adminOk)?'':'none';
+  document.getElementById('vista-admin').style.display = (v==='admin'&&adminOk)?'':'none';
+}
+
+function login() {
+  if (document.getElementById('input-pass').value === PASS) {
+    adminOk = true;
+    renderAdmin();
+    setVista('admin');
+  } else { alert('Contraseña incorrecta'); }
+}
+
+function previewFoto(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById('foto-preview');
+    img.src = e.target.result;
+    img.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function subirImagen(file) {
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', CLOUDINARY_PRESET);
+  const r = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: fd });
+  const data = await r.json();
+  return data.secure_url;
+}
+
+async function guardar() {
+  const nombre = document.getElementById('f-nombre').value.trim();
+  const precio = document.getElementById('f-precio').value;
+  if (!nombre || !precio) return alert('Completá nombre y precio');
+  const btn = document.getElementById('btn-guardar');
+  btn.disabled = true;
+  btn.textContent = 'Guardando...';
+  try {
+    let imagen_url = editId ? (prendas.find(p=>p.id===editId)?.imagen_url || '') : '';
+    const foto = document.getElementById('f-foto').files[0];
+    if (foto) imagen_url = await subirImagen(foto);
+    const data = {
+      nombre,
+      precio: Number(precio),
+      categoria: document.getElementById('f-categoria').value,
+      talla: document.getElementById('f-talla').value,
+      descripcion: document.getElementById('f-desc').value.trim(),
+      imagen_url
+    };
+    if (editId) {
+      await api('PATCH', `prendas?id=eq.${editId}`, data);
+    } else {
+      await api('POST', 'prendas', { ...data, vendida: false });
+    }
+    cancelarEdit();
+    await cargarPrendas();
+  } catch(e) { alert('Error al guardar: ' + e.message); }
+  btn.disabled = false;
+  btn.textContent = editId ? 'Guardar cambios' : 'Agregar prenda';
+}
+
+function editar(id) {
+  const p = prendas.find(x=>x.id===id);
+  editId = id;
+  document.getElementById('f-nombre').value = p.nombre;
+  document.getElementById('f-precio').value = p.precio;
+  document.getElementById('f-categoria').value = p.categoria;
+  document.getElementById('f-talla').value = p.talla;
+  document.getElementById('f-desc').value = p.descripcion || '';
+  if (p.imagen_url) { document.getElementById('foto-preview').src = p.imagen_url; document.getElementById('foto-preview').style.display='block'; }
+  document.getElementById('form-title').textContent = '✏️ Editar prenda';
+  document.getElementById('btn-guardar').textContent = 'Guardar cambios';
+  document.getElementById('btn-cancelar').style.display = 'inline-block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function cancelarEdit() {
+  editId = null;
+  document.getElementById('f-nombre').value = '';
+  document.getElementById('f-precio').value = '';
+  document.getElementById('f-categoria').value = 'Remeras';
+  document.getElementById('f-talla').value = 'M';
+  document.getElementById('f-desc').value = '';
+  document.getElementById('f-foto').value = '';
+  document.getElementById('foto-preview').style.display = 'none';
+  document.getElementById('form-title').textContent = '➕ Agregar prenda';
+  document.getElementById('btn-guardar').textContent = 'Agregar prenda';
+  document.getElementById('btn-cancelar').style.display = 'none';
+}
+
+async function toggleVendida(id, actual) {
+  await api('PATCH', `prendas?id=eq.${id}`, { vendida: !actual });
+  await cargarPrendas();
+}
+
+async function eliminar(id) {
+  if (!confirm('¿Eliminar esta prenda?')) return;
+  await api('DELETE', `prendas?id=eq.${id}`);
+  await cargarPrendas();
+}
+
+function whatsapp(id) {
+  const p = prendas.find(x=>x.id===id);
+  const msg = encodeURIComponent(`Hola! Vi tu Maru Clothes y me interesa: *${p.nombre}* - $${p.precio}. ¿Está disponible?`);
+  window.open(`https://wa.me/${WHATSAPP}?text=${msg}`, '_blank');
+}
+
+function abrirPreview(url) { document.getElementById('preview-img').src=url; document.getElementById('preview-overlay').style.display='flex'; }
+function cerrarPreview() { document.getElementById('preview-overlay').style.display='none'; }
+
+renderFiltros();
+cargarPrendas();
+</script>
+</body>
+</html>
