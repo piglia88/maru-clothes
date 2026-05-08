@@ -3,37 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maru Clothes 👗</title>
+<title>Maru Clothes</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: system-ui, sans-serif; background: #f5f5f0; min-height: 100vh; }
-  header { background: #fff; border-bottom: 1px solid #e8e8e8; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 10; }
-  .logo { font-size: 20px; font-weight: 600; color: #222; }
-  .logo span { color: #1D9E75; }
+  body { font-family: system-ui, sans-serif; background: #f7f5f2; min-height: 100vh; }
+  header { background: #fff; border-bottom: 1px solid #e5e0d8; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 10; }
+  .logo { font-size: 20px; font-weight: 600; color: #1a1a1a; letter-spacing: 0.5px; }
+  .logo span { color: #1a1a1a; }
   .nav { display: flex; gap: 8px; }
-  .nav button { background: transparent; border: 1px solid #ddd; border-radius: 8px; padding: 6px 14px; cursor: pointer; font-size: 13px; color: #555; transition: all .2s; }
-  .nav button.active { background: #1D9E75; color: #fff; border-color: #1D9E75; }
+  .nav button { background: transparent; border: 1px solid #ccc; border-radius: 6px; padding: 6px 14px; cursor: pointer; font-size: 13px; color: #444; transition: all .2s; }
+  .nav button.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
   .body { padding: 20px 16px; max-width: 960px; margin: 0 auto; }
   .filtros { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-  .filtros button { background: #fff; border: 1px solid #e0e0e0; border-radius: 20px; padding: 5px 14px; cursor: pointer; font-size: 13px; color: #666; transition: all .2s; }
-  .filtros button.active { background: #1D9E75; color: #fff; border-color: #1D9E75; }
+  .filtros button { background: #fff; border: 1px solid #d8d2c8; border-radius: 20px; padding: 5px 14px; cursor: pointer; font-size: 13px; color: #555; transition: all .2s; }
+  .filtros button.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
-  .card { background: #fff; border: 1px solid #eee; border-radius: 12px; overflow: hidden; position: relative; transition: transform .2s; }
+  .card { background: #fff; border: 1px solid #e5e0d8; border-radius: 8px; overflow: hidden; position: relative; transition: transform .2s; }
   .card:hover { transform: translateY(-2px); }
-  .card-img { width: 100%; aspect-ratio: 3/4; background: #f0f0f0; overflow: hidden; cursor: zoom-in; }
+  .card-img { width: 100%; aspect-ratio: 3/4; background: #f0ede8; overflow: hidden; cursor: zoom-in; }
   .card-img img { width: 100%; height: 100%; object-fit: cover; }
-  .card-img .no-img { display: flex; align-items: center; justify-content: center; height: 100%; font-size: 48px; }
+  .card-img .no-img { display: flex; align-items: center; justify-content: center; height: 100%; font-size: 48px; color: #bbb; }
   .card-body { padding: 10px 12px 12px; }
-  .card-nombre { font-weight: 600; font-size: 14px; margin-bottom: 4px; color: #222; }
+  .card-nombre { font-weight: 600; font-size: 14px; margin-bottom: 4px; color: #1a1a1a; }
   .badges { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 6px; }
-  .badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; }
-  .badge-cat { background: #E1F5EE; color: #0F6E56; }
-  .badge-talla { background: #EEEDFE; color: #3C3489; }
-  .badge-vendida-tag { position: absolute; top: 10px; right: 10px; background: #E24B4A; color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 10px; font-weight: 600; }
-  .precio { font-size: 18px; font-weight: 700; color: #1D9E75; margin: 4px 0 8px; }
-  .desc { font-size: 12px; color: #888; margin-bottom: 10px; line-height: 1.4; }
-  .wa-btn { width: 100%; background: #25D366; color: #fff; border: none; border-radius: 8px; padding: 9px 0; cursor: pointer; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; }
-  .wa-btn:hover { background: #1ea855; }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 4px; }
+  .badge-cat { background: #ede8e0; color: #444; }
+  .badge-talla { background: #e8e8e8; color: #444; }
+  .badge-vendida-tag { position: absolute; top: 10px; right: 10px; background: #1a1a1a; color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: 600; }
+  .precio { font-size: 18px; font-weight: 700; color: #1a1a1a; margin: 4px 0 8px; }
+  .desc { font-size: 12px; color: #777; margin-bottom: 10px; line-height: 1.4; }
+  .wa-btn { width: 100%; background: #1a1a1a; color: #fff; border: none; border-radius: 6px; padding: 9px 0; cursor: pointer; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .wa-btn:hover { background: #333; }
   .empty { text-align: center; padding: 60px 20px; color: #aaa; }
   .empty .emoji { font-size: 48px; margin-bottom: 12px; }
   /* Admin */
@@ -77,7 +77,7 @@
 </div>
 
 <header>
-  <div class="logo">Maru <span>Clothes</span> 👗</div>
+  <div class="logo">Maru <span>Clothes</span></div>
   <div class="nav">
     <button id="btn-tienda" class="active" onclick="setVista('tienda')">Ver tienda</button>
     <button id="btn-admin" onclick="setVista('admin')">Admin</button>
@@ -213,7 +213,7 @@ function renderTienda() {
         </div>
         <div class="precio">$${Number(p.precio).toLocaleString('es-AR')}</div>
         ${p.descripcion ? `<div class="desc">${p.descripcion}</div>` : ''}
-        ${!p.vendida ? `<button class="wa-btn" onclick="whatsapp(${p.id})">💬 Consultar por WhatsApp</button>` : ''}
+        ${!p.vendida ? `        <button class="wa-btn" onclick="whatsapp(${p.id})">Consultar por WhatsApp</button>` : ''}
       </div>
     </div>
   `).join('');
